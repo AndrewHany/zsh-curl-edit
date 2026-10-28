@@ -1,5 +1,7 @@
 # zsh-curl-edit
 
+[![CI](https://github.com/AndrewHany/zsh-curl-edit/actions/workflows/ci.yml/badge.svg)](https://github.com/AndrewHany/zsh-curl-edit/actions/workflows/ci.yml)
+
 Automatically open pasted cURL commands in an editor before executing them.
 
 Designed for Zsh and Oh My Zsh, especially for requests copied with **Copy as cURL (bash)** from Chrome DevTools. Those commands are long, multiline, and full of headers you usually want to trim or tweak before running them.
@@ -107,7 +109,7 @@ Set variables in `~/.zshrc`. `CURL_EDIT_EDITOR` is read each time you paste, so 
 
 ## Using your own editor
 
-VS Code is the default. When `CURL_EDIT_EDITOR` is `code`, the plugin runs `code --wait <file>` for you. To use something else, set `CURL_EDIT_EDITOR` in `~/.zshrc`:
+VS Code is the default. When `CURL_EDIT_EDITOR` is `code`, the plugin runs `code --reuse-window --wait <file>` for you. To use something else, set `CURL_EDIT_EDITOR` in `~/.zshrc`:
 
 ```zsh
 export CURL_EDIT_EDITOR=nvim
