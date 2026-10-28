@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh and script(1)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y zsh bsdutils
+
+      - name: Syntax check
+        run: zsh -n zsh-curl-edit.plugin.zsh
+
+      - name: Behavioral tests
+        run: zsh tests/run.zsh
