@@ -1,4 +1,3 @@
-
 # zsh-curl-edit
 # Intercept pasted cURL commands and open them in an editor.
 # Pasted commands are returned to the prompt, never executed automatically.
@@ -11,9 +10,11 @@ _curl_edit_bracketed_paste() {
   local file
   local edited
   local editor_status
+  local -a editor_cmd
 
-  # Preserve normal paste behavior, including terminal escape handling.
-  zle .bracketed-paste || return
+  # Preserve normal paste behavior, including any widget that was already
+  # bound (e.g. Oh My Zsh's bracketed-paste-magic).
+  zle _curl_edit_orig_bracketed_paste || return
 
   # Only inspect pastes into an empty command line.
   [[ -z "$original_buffer" ]] || return
@@ -36,14 +37,16 @@ _curl_edit_bracketed_paste() {
   CURSOR=0
   zle -I
 
-  if (( $+commands[code] )) && [[ "$CURL_EDIT_EDITOR" == code ]]; then
-    code --wait "$file"
-    editor_status=$?
-  elif [[ "$CURL_EDIT_EDITOR" != code ]] &&
-       (( $+commands[${CURL_EDIT_EDITOR%% *}] )); then
-    # Supports simple editor commands such as "vim".
-    # VS Code should use the default "code" setting above.
-    ${=CURL_EDIT_EDITOR} "$file"
+  # "code" needs --wait so the widget blocks until the file is closed.
+  if [[ "$CURL_EDIT_EDITOR" == code ]]; then
+    editor_cmd=(code --reuse-window --wait)
+  else
+    editor_cmd=(${=CURL_EDIT_EDITOR})
+  fi
+
+  # whence -p resolves both bare command names and absolute paths.
+  if (( $#editor_cmd )) && whence -p -- "${editor_cmd[1]}" >/dev/null; then
+    "${editor_cmd[@]}" "$file"
     editor_status=$?
   else
     editor_status=127
@@ -64,5 +67,10 @@ _curl_edit_bracketed_paste() {
   zle redisplay
 }
 
-# Register the widget, replacing the default bracketed-paste widget.
+# Keep a handle on the current bracketed-paste widget so we can chain to it.
+# The guard makes re-sourcing the plugin safe (no self-aliasing / recursion).
+if [[ "${widgets[bracketed-paste]}" != user:_curl_edit_bracketed_paste ]]; then
+  zle -A bracketed-paste _curl_edit_orig_bracketed_paste
+fi
+
 zle -N bracketed-paste _curl_edit_bracketed_paste
