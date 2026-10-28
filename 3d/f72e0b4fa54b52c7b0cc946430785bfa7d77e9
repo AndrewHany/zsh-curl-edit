@@ -1,0 +1,22 @@
+.github/workflows/ci.yml
+  s_0487d605e763cd::t_0aef08926a2ae1 1-27
+README.md
+  s_0487d605e763cd::t_3caa47e357893f 112
+  s_0487d605e763cd::t_b71dce5dd2d94f 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "3df72e0b4fa54b52c7b0cc946430785bfa7d77e9",
+  "prompts": {},
+  "sessions": {
+    "s_0487d605e763cd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b37304b8-197b-4827-bda5-6077f2891b4b",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Andrew Youssef <24782715+AndrewHany@users.noreply.github.com>"
+    }
+  }
+}
