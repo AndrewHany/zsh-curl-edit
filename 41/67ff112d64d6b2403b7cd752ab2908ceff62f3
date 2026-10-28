@@ -1,0 +1,16 @@
+LICENSE
+  h_f5c8175be959c2 1-17
+README.md
+  h_f5c8175be959c2 1-112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "4167ff112d64d6b2403b7cd752ab2908ceff62f3",
+  "prompts": {},
+  "humans": {
+    "h_f5c8175be959c2": {
+      "author": "Andrew Youssef <andrew.youssef.2@deliveryhero.com>"
+    }
+  }
+}
